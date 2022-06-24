@@ -29,10 +29,11 @@ function App() {
 
   const defaultAccount = '0xe63CC2B1b9A199cc53B279bC1F6258936E63be95';
 
-  getNFTs(defaultAccount);
 
   useEffect(() => {
+    getNFTs(defaultAccount);
     (async () => {
+      console.log("Conencting wallet.")
       const account = await connect();
       if (account) {
         // getNFTs(account);
@@ -52,6 +53,7 @@ function App() {
   }
 
   async function getNFTs(account) {
+    console.log("Executing getNFTs")
     const rpc = "https://rpc-mumbai.maticvigil.com/" // better from Alchemy
     const ethersProvider = new ethers.providers.JsonRpcProvider(rpc);
     let abi = [
