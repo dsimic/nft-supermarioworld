@@ -57,7 +57,8 @@ function App() {
   async function getNFTs(account) {
     console.log("Executing getNFTs")
     setLoadingStatus({ loading: true, message: "Fetching metadata from blockchain ..." });
-    const rpc = "https://rpc-mumbai.maticvigil.com/" // better from Alchemy
+    // const rpc = "https://rpc-mumbai.maticvigil.com/" // better from Alchemy
+    const rpc = "https://polygon-mumbai.g.alchemy.com/v2/b_Xs_HhEAbupUXo-MPgdtt2iX42u8AWa" // better from Alchemy
     const ethersProvider = new ethers.providers.JsonRpcProvider(rpc);
     let abi = [
       "function symbol() public view returns(string memory)",
