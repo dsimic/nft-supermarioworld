@@ -61,7 +61,6 @@ function App() {
       "function balanceOfBatch(address[] accounts, uint256[] ids) public view returns(uint256[])"
     ];
     const contractAddress = "0xE1fcDb4224Bc4740C8B00D4626755D993664139b";
-    const address = '0xe63CC2B1b9A199cc53B279bC1F6258936E63be95';
     let nftCollection = new ethers.Contract(
       contractAddress,
       abi,
@@ -75,7 +74,7 @@ function App() {
     let tempArr = [];
     let baseUrl = "";
     for (let i = 1; i <= numberOfNfts; i++) {
-      if (i == 1) {
+      if (i === 1) {
         let tokenURI = await nftCollection.uri(i);
         baseUrl = tokenURI.replace(/\d+.json/, "")
         let metadata = await getMetadataFromIpfs(tokenURI);
@@ -96,8 +95,8 @@ function App() {
     <div className="app">
       <Container>
         <br></br>
-        <h3 style={{textAlign: "center"}}>Super Mario World Collection</h3>
-        <div style={{textAlign: "center", color: "gray"}}>The rarest and best of Super Mario World</div>
+        <h3 style={{ textAlign: "center" }}>Super Mario World Collection</h3>
+        <div style={{ textAlign: "center", color: "gray" }}>The rarest and best of Super Mario World</div>
         <br></br>
         <Row md={2} xs={1} className="g-4">
           {
