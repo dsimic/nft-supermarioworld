@@ -31,12 +31,12 @@ function App() {
 
 
   useEffect(() => {
-    getNFTs(defaultAccount);
     (async () => {
-      console.log("Conencting wallet.")
+      console.log("Connecting wallet.")
       const account = await connect();
       if (account) {
         // getNFTs(account);
+        getNFTs(defaultAccount);
       }
     })()
   }, [])
