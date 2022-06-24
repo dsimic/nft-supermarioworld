@@ -3,11 +3,12 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import NFTCard from "./components/NFTCard";
 // import CardGroup from 'react-bootstrap/CardGroup';
 import Container from 'react-bootstrap/Container';
-import { Row, Col } from 'react-bootstrap';
+import { Row, Col, Spinner } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import NFTModal from './components/NFTModal';
 import { ethers } from 'ethers';
 import { connect } from './helpers';
+import LoadingContainer from './components/LoadingContainer';
 
 const axios = require('axios');
 const initialNFTs = [
@@ -26,6 +27,7 @@ function App() {
   const [showModal, setShowModal] = useState(false);
   const [selectedNFT, setSelectedNFT] = useState({});
   const [nfts, setNfts] = useState(initialNFTs);
+  const [loadingStatus, setLoadingStatus] = useState({ loading: true, message: "Waiting for your wallet." });
 
   const defaultAccount = '0xe63CC2B1b9A199cc53B279bC1F6258936E63be95';
 
@@ -54,6 +56,7 @@ function App() {
 
   async function getNFTs(account) {
     console.log("Executing getNFTs")
+    setLoadingStatus({ loading: true, message: "Fetching metadata from blockchain ..." });
     const rpc = "https://rpc-mumbai.maticvigil.com/" // better from Alchemy
     const ethersProvider = new ethers.providers.JsonRpcProvider(rpc);
     let abi = [
@@ -83,6 +86,7 @@ function App() {
         metadata.symbol = collectionSymbol;
         metadata.copies = copies[i - 1].toNumber();
         tempArr.push(metadata);
+        setLoadingStatus({ loading: true, message: "Fetching nft images from ipfs ..." });
       } else {
         let metadata = await getMetadataFromIpfs(baseUrl + `${i}.json`);
         metadata.symbol = collectionSymbol;
@@ -91,6 +95,7 @@ function App() {
       }
     }
     setNfts(tempArr);
+    setLoadingStatus({ loading: false, message: null });
   }
 
   return (
@@ -100,11 +105,16 @@ function App() {
         <h3 style={{ textAlign: "center" }}>Super Mario World Collection</h3>
         <div style={{ textAlign: "center", color: "gray" }}>The rarest and best of Super Mario World</div>
         <br></br>
-        <Row md={2} xs={1} className="g-4">
-          {
-            nfts.map((el, i) => <Col xs md={4} sm={6} lg={3} key={i}><NFTCard nft={el} toggleModal={() => toggleModal(el)}></NFTCard> <br></br></Col>)
-          }
-        </Row>
+        {!loadingStatus.loading &&
+          <Row md={2} xs={1} className="g-4">
+            {
+              nfts.map((el, i) => <Col xs md={4} sm={6} lg={3} key={i}><NFTCard nft={el} toggleModal={() => toggleModal(el)}></NFTCard> <br></br></Col>)
+            }
+          </Row>
+        }
+        {loadingStatus.loading &&
+          <LoadingContainer message={loadingStatus.message}></LoadingContainer>
+        }
       </Container>
       <NFTModal showModal={showModal} hideModal={() => setShowModal(false)} nft={selectedNFT}></NFTModal>
     </div>
