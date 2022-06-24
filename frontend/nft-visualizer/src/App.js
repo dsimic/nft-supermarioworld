@@ -86,7 +86,7 @@ function App() {
         metadata.symbol = collectionSymbol;
         metadata.copies = copies[i - 1].toNumber();
         tempArr.push(metadata);
-        setLoadingStatus({ loading: true, message: "Fetching nft images from ipfs ..." });
+        setLoadingStatus({ loading: true, message: "Fetching nft metadata from ipfs ..." });
       } else {
         let metadata = await getMetadataFromIpfs(baseUrl + `${i}.json`);
         metadata.symbol = collectionSymbol;
